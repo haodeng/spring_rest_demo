@@ -1,8 +1,8 @@
 package com.hao.demo.api;
 
 import com.hao.demo.bean.User;
+import com.hao.demo.dao.UserRepository;
 import com.hao.demo.exception.UserNotFoundException;
-import com.hao.demo.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -15,19 +15,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api")
-public class UserResource {
+@RequestMapping("/api/v2")
+public class UserResourceV2 {
 
     @Autowired
-    UserService userService;
+    private UserRepository userRepository;
 
     @GetMapping(value = "/users")
     public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getUsers();
+        List<User> users = userRepository.findAll();
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build(); //or HttpStatus.NOT_FOUND
         }
@@ -38,14 +39,15 @@ public class UserResource {
     @ApiOperation(value = "Find user by id",
             notes = "Also returns a link to retrieve all users with rel - all-users")
     public Resource<User> getUser(@PathVariable("id") long id) {
-        User user = userService.getById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
             throw new UserNotFoundException("User not found, id:" + id);
         }
-        Resource<User> resource = new Resource<User>(user);
-        ControllerLinkBuilder controllerLinkBuilder = ControllerLinkBuilder.linkTo(methodOn(this.getClass()).getUsers());
 
-        resource.add(controllerLinkBuilder.withRel("all-users"));
+        Resource<User> resource = new Resource<User>(user.get());
+        ControllerLinkBuilder clb = ControllerLinkBuilder.linkTo(methodOn(this.getClass()).getUsers());
+        resource.add(clb.withRel("all-users"));
+        resource.add(ControllerLinkBuilder.linkTo(methodOn(this.getClass()).getUser(id)).withSelfRel());
 
         return resource;
     }
@@ -53,11 +55,11 @@ public class UserResource {
     @PostMapping(value = "/user")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
 
-        if (userService.exists(user)) {
+        if(userRepository.existsById(user.getId())){
             return new ResponseEntity("Unable to create. A User " + user.getFirstName() + " already exist.", HttpStatus.CONFLICT);
-
         }
-        userService.createUser(user);
+        userRepository.save(user);
+
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
@@ -66,26 +68,26 @@ public class UserResource {
 
     @PutMapping(value = "/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") long id, @Valid @RequestBody User user) {
-
-        User currentUser = userService.getById(id);
-        if (currentUser == null) {
+        Optional<User> currentUser = userRepository.findById(id);
+        if (!currentUser.isPresent()) {
             return new ResponseEntity("User " + id + " cannot found.",HttpStatus.NOT_FOUND);
         }
 
-        currentUser.setFirstName(user.getFirstName());
-        currentUser.setLastName(user.getLastName());
+        currentUser.get().setFirstName(user.getFirstName());
+        currentUser.get().setLastName(user.getLastName());
 
-        userService.updateUser(currentUser);
-        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+        userRepository.save(currentUser.get());
+        return new ResponseEntity<User>(currentUser.get(), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
-        User user = userService.getById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
             return new ResponseEntity("User " + id + " cannot found.",HttpStatus.NOT_FOUND);
         }
-        userService.deleteUser(user);
+
+        userRepository.delete(user.get());
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 }

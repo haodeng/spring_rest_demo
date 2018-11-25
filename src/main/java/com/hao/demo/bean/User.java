@@ -6,11 +6,17 @@ package com.hao.demo.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @ApiModel(description="All details about the user. ")
+@Entity
 public class User {
+    @Id
+    @GeneratedValue
     private long id;
 
     @NotNull
@@ -19,6 +25,17 @@ public class User {
     private String firstName;
     @NotNull
     private String lastName;
+
+    public User() {
+        super();
+    }
+
+    public User(Long id, String firstName, String lastName) {
+        super();
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public long getId() {
         return id;

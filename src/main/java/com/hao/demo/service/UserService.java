@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Mock test data.
+ * can use any mem database instead.
+ */
 @Component
 public class UserService {
     final AtomicLong counter = new AtomicLong();

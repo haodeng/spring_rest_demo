@@ -1,5 +1,5 @@
 # SpringBoot Rest Api. Hao's demo
-Spring Boot for Rest basic structure, a good starting point to write complex Apis.
+Spring Boot for Rest basic structure, a good starting point to write complex Apis. The following features are included.
 
 ## 1. Rest CRUD
 A user resource to create, read, update and delete.

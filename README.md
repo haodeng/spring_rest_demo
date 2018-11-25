@@ -1,4 +1,4 @@
-# spring_rest_demo
+# SpringBoot Rest Api. Hao's demo
 Spring Boot for Rest basic structure, a clean and easy to maintain Api.
 
 ## 1. Rest CRUD

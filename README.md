@@ -4,3 +4,4 @@ Spring Boot for Rest
 2. Swagger doc
 3. Rest exception handling
 4. Validation
+5. Api security

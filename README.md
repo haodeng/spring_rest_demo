@@ -50,3 +50,6 @@ http://localhost:8080/api/v2/users
 
 ## 8. JPA support
 Use mem database as data privider.
+
+## 9. Unit tests of Api
+How to unit test a rest Api

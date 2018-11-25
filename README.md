@@ -40,3 +40,13 @@ How to add hypermedia links to the Api response nicely? For example:
     }
 }
 ```
+
+## 7. Rest Api version
+```javascript
+Example URL:
+http://localhost:8080/api/v1/users
+http://localhost:8080/api/v2/users
+```
+
+## 8. JPA support
+Use mem database as data privider.

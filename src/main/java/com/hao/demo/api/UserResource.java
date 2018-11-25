@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class UserResource {
 
     @Autowired
     UserService userService;

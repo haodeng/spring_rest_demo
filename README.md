@@ -48,11 +48,14 @@ http://localhost:8080/api/v1/users
 http://localhost:8080/api/v2/users
 ```
 
-## 8. JPA support
+## 8. Content Negotiation
+support both xml and json
+
+## 9. JPA support
 Use mem database as data privider.
 
-## 9. Unit tests of Api
+## 10. Unit tests of Api
 How to unit test a rest Api
 
-## 10. How to integrate test of Rest Api?
+## 11. How to integrate test of Rest Api?
 Startup a embeded server to do the real http calls.

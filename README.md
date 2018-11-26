@@ -53,3 +53,6 @@ Use mem database as data privider.
 
 ## 9. Unit tests of Api
 How to unit test a rest Api
+
+## 10. How to integrate test of Rest Api?
+Startup a embeded server to do the real http calls.

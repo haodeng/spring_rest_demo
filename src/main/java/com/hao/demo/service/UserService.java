@@ -33,8 +33,9 @@ public class UserService {
         return new ArrayList<User>(users.values());
     }
 
-    public void createUser(User user){
+    public User createUser(User user){
         users.put(user.getId(), user);
+        return user;
     }
 
     public boolean exists(User user){

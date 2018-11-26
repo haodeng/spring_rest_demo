@@ -2,6 +2,7 @@ package com.hao.demo.api;
 
 import com.hao.demo.bean.User;
 import com.hao.demo.service.UserService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -9,7 +10,10 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,5 +46,29 @@ public class UserResourceV1Test {
         String expected = "{\"id\":1,\"firstName\":\"Deng\",\"lastName\":\"Hao\",\"_links\":{\"all-users\":{\"href\":\"http://localhost/api/v1/users\"},\"self\":{\"href\":\"http://localhost/api/v1/user/1\"}}}";
 
         JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void createUser() throws Exception {
+        String createUserJson = "{\"id\":4,\"firstName\": \"Alex\",\"lastName\": \"Pato\"}";
+        User newUser = new User(4L, "Alex", "Pato");
+
+        Mockito.when(
+                userService.createUser(Mockito.any(User.class))).thenReturn(newUser);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/api/v1/user")
+                .accept(MediaType.APPLICATION_JSON).content(createUserJson)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+
+        Assert.assertEquals("http://localhost/api/v1/user/4",
+                response.getHeader(HttpHeaders.LOCATION));
+
     }
 }

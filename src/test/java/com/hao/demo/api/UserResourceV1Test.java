@@ -69,6 +69,5 @@ public class UserResourceV1Test {
 
         Assert.assertEquals("http://localhost/api/v1/user/4",
                 response.getHeader(HttpHeaders.LOCATION));
-
     }
 }

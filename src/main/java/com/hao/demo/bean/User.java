@@ -1,16 +1,13 @@
 package com.hao.demo.bean;
 
-
-
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModel;
+//import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@ApiModel(description="All details about the user. ")
+//@ApiModel(description="All details about the user. ")
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"firstName" , "lastName"})})
 public class User {
@@ -20,7 +17,7 @@ public class User {
 
     @NotNull
     @Size(min=2, message="Name should have at least 2 characters")
-    @ApiModelProperty(notes="Name should have at least 2 characters")
+//    @ApiModelProperty(notes="Name should have at least 2 characters")
     private String firstName;
     @NotNull
     private String lastName;

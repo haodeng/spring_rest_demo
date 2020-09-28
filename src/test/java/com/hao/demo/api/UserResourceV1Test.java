@@ -19,9 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.Base64Utils;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = UserResourceV1.class, secure = false)
+@WebMvcTest(value = UserResourceV1.class)
 public class UserResourceV1Test {
     @Autowired
     private MockMvc mockMvc;
@@ -38,6 +39,8 @@ public class UserResourceV1Test {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/api/v1/user/1")
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Basic " + Base64Utils.encodeToString("user1:pass1".getBytes()))
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -59,6 +62,8 @@ public class UserResourceV1Test {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/api/v1/user")
                 .accept(MediaType.APPLICATION_JSON).content(createUserJson)
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Basic " + Base64Utils.encodeToString("user1:pass1".getBytes()))
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();

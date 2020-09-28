@@ -5,8 +5,8 @@ import com.hao.demo.dao.UserRepository;
 import com.hao.demo.exception.UserNotFoundException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v2")
@@ -38,16 +38,16 @@ public class UserResourceV2 {
     @GetMapping(value = "/user/{id}")
     @ApiOperation(value = "Find user by id",
             notes = "Also returns a link to retrieve all users with rel - all-users")
-    public Resource<User> getUser(@PathVariable("id") long id) {
+    public EntityModel<User> getUser(@PathVariable("id") long id) {
         Optional<User> user = userRepository.findById(id);
         if (!user.isPresent()) {
             throw new UserNotFoundException("User not found, id:" + id);
         }
 
-        Resource<User> resource = new Resource<User>(user.get());
-        ControllerLinkBuilder clb = ControllerLinkBuilder.linkTo(methodOn(this.getClass()).getUsers());
+        EntityModel<User> resource = EntityModel.of(user.get());
+        WebMvcLinkBuilder clb = WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).getUsers());
         resource.add(clb.withRel("all-users"));
-        resource.add(ControllerLinkBuilder.linkTo(methodOn(this.getClass()).getUser(id)).withSelfRel());
+        resource.add(WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).getUser(id)).withSelfRel());
 
         return resource;
     }

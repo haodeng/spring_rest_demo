@@ -6,6 +6,7 @@ A user resource to create, read, update and delete.
 
 ## 2. Swagger doc
 Create rest doc in the code. 
+http://localhost:8080/swagger-ui/
 
 ## 3. Rest exception handling
 Customize the exception of validation, user specific exception and generic exceptions. For example, a descriptive response:
@@ -52,7 +53,7 @@ http://localhost:8080/api/v2/users
 support both xml and json
 
 ## 9. JPA support
-Use mem database as data privider.
+Use mem database as data provider.
 
 ## 10. Unit tests of Api
 How to unit test a rest Api

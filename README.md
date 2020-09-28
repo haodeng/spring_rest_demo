@@ -4,7 +4,7 @@ Spring Boot for Rest basic structure, a good starting point to write complex Api
 ## 1. Rest CRUD
 A user resource to create, read, update and delete.
 
-## 2. Swagger doc
+## 2. Swagger doc (OpenAPI 3.0 support)
 Create rest doc in the code. 
 http://localhost:8080/swagger-ui/
 

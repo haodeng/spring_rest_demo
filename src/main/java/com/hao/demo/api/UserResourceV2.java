@@ -32,7 +32,7 @@ public class UserResourceV2 {
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build(); //or HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/{id}")
